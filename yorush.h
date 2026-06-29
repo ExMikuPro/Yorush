@@ -68,6 +68,16 @@ yorush_u16_t;
 #define YORUSH_CRLF 1
 #endif
 
+/* Optional command prefix string.
+ * Examples:
+ *   #define YORUSH_CMD_PREFIX "/"
+ *   #define YORUSH_CMD_PREFIX "AT+"
+ * Default "" means no prefix filtering.
+ */
+#ifndef YORUSH_CMD_PREFIX
+#define YORUSH_CMD_PREFIX ""
+#endif
+
 /* Optional lock hooks, useful when feeding from interrupt context */
 #ifndef YORUSH_LOCK
 #define YORUSH_LOCK()   do{}while(0)
@@ -126,6 +136,33 @@ static inline unsigned yorush__streq_(const char *a, const char *b)
     return (unsigned)(*a == *b);
 }
 
+static inline unsigned yorush__starts_with_(const char *s, const char *prefix)
+{
+    if (!s || !prefix) return 0u;
+
+    while (*prefix != '\0') {
+        if (*s != *prefix) {
+            return 0u;
+        }
+        ++s;
+        ++prefix;
+    }
+
+    return 1u;
+}
+
+static inline char *yorush__skip_prefix_(char *s, const char *prefix)
+{
+    if (!s || !prefix) return s;
+
+    while (*prefix != '\0') {
+        ++s;
+        ++prefix;
+    }
+
+    return s;
+}
+
 static inline void yorush__write_(YORUSH_HandleTypeDef *hsh, const char *s)
 {
 #if YORUSH_ENABLE
@@ -147,7 +184,7 @@ static inline void yorush__writeln_(YORUSH_HandleTypeDef *hsh, const char *s)
 #if YORUSH_ENABLE
 #if YORUSH_USE_YORULOG
     (void)hsh;
-    YORULOG_Println(s ? s : "");
+    YORULOG_PrintLongln(s ? s : "");
 #else
     if (hsh && hsh->WriteLine) {
         hsh->WriteLine(s ? s : "");
@@ -302,10 +339,21 @@ static inline void YORUSH_ExecuteLine(YORUSH_HandleTypeDef *hsh, char *line)
 #if YORUSH_ENABLE
     int argc;
     const YORUSH_CommandTypeDef *cmd;
+    char *cmd_line = line;
 
     if (!hsh || !line) return;
 
-    argc = yorush__tokenize_(hsh, line);
+    if (YORUSH_CMD_PREFIX[0] != '\0') {
+        if (!yorush__starts_with_(line, YORUSH_CMD_PREFIX)) {
+            return;
+        }
+
+        cmd_line = yorush__skip_prefix_(line, YORUSH_CMD_PREFIX);
+    }
+
+    if (*cmd_line == '\0') return;
+
+    argc = yorush__tokenize_(hsh, cmd_line);
     if (argc <= 0) return;
 
     cmd = yorush__find_cmd_(hsh, hsh->Argv[0]);
