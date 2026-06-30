@@ -19,6 +19,7 @@ It is a good fit for STM32 or other small embedded projects that want a tiny int
 > | [Yorunvm](https://github.com/ExMikuPro/Yorunvm) | STM32 on-chip NVM / Flash access helper |
 > | [Yorukv](https://github.com/ExMikuPro/Yorukv) | Lightweight KV configuration library |
 > | [Yorubench](https://github.com/ExMikuPro/Yorubench) | Lightweight performance measurement library |
+> | [Yoruassert](https://github.com/ExMikuPro/Yoruassert.git) | Lightweight assertion helper |
 
 ---
 
