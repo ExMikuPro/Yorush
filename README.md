@@ -10,7 +10,7 @@ It is a good fit for STM32 or other small embedded projects that want a tiny int
 
 > **Yoru Series**
 >
-> A family of lightweight utility libraries for STM32 HAL. Each library can be used independently or combined as needed.
+> Related lightweight utility libraries for STM32 HAL.
 >
 > | Library | Role |
 > | --- | --- |
