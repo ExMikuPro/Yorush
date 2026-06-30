@@ -8,6 +8,20 @@ Yorush 是一个面向嵌入式项目的轻量级命令 shell 解析器。
 
 ---
 
+> **Yoru 系列**
+>
+> 一组面向 STM32 HAL 的轻量级工具库。各库可独立使用，也可以组合使用。
+>
+> | 库 | 定位 |
+> | --- | --- |
+> | [Yorulog](https://github.com/ExMikuPro/Yorulog) | 轻量级 UART 日志库 |
+> | [Yorush](https://github.com/ExMikuPro/Yorush) | 轻量级 UART Shell / 命令解析器 |
+> | [Yorunvm](https://github.com/ExMikuPro/Yorunvm) | STM32 片上 NVM / Flash 访问辅助库 |
+> | [Yorukv](https://github.com/ExMikuPro/Yorukv) | 轻量级 KV 配置库 |
+> | [Yorubench](https://github.com/ExMikuPro/Yorubench) | 轻量级性能测量库 |
+
+---
+
 ## 主要特性
 
 * 单头文件：只需要引入 `yorush.h`
